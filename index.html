@@ -152,6 +152,13 @@
     .cat__progress{margin-top:16px;}
   }
 
+  /* GEÇİCİ ÖLÇÜM ROZETİ */
+  #olcum{
+    position:fixed; top:8px; right:8px; z-index:99;
+    background:#E8531A; color:#fff; font-size:12px; font-weight:500;
+    padding:6px 10px; border-radius:4px; font-family:'Poppins',sans-serif;
+  }
+
   @media (prefers-reduced-motion:reduce){
     .cat__track{scroll-behavior:auto;}
     .card__media,.card__rule{transition:none;}
@@ -321,6 +328,7 @@
   </div>
 
   <div class="cat__progress" aria-hidden="true"><span id="bar"></span></div>
+  <div id="olcum">ölçülüyor…</div>
 </section>
 
 <script>
@@ -339,6 +347,11 @@
     var kartH = Math.max(enAz, Math.min(kalan, enCok));
     document.documentElement.style.setProperty('--rows', 1);
     document.documentElement.style.setProperty('--card-h', kartH + 'px');
+  }
+
+  function olc(){
+    var el = document.getElementById('olcum');
+    if(el) el.textContent = 'iframe: ' + window.innerHeight + 'px';
   }
 
   function step(){
@@ -361,6 +374,8 @@
   window.addEventListener('resize', function(){ layout(); update(); });
   layout();
   update();
+  olc();
+  window.addEventListener('resize', olc);
   window.addEventListener('load', function(){ layout(); update(); });
 
   function sendHeight(){
