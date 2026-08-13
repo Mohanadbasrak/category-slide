@@ -13,18 +13,20 @@
     --line:#E6E3DF;
     --paper:#FFFFFF;
     --accent:#E8531A;
-    --card-h:max(260px, calc(100vh - 132px));
+    /* ŞERİDİN TOPLAM YÜKSEKLİĞİ — tek ayar noktası. Kart boyu buna göre hesaplanır. */
+    --strip-h:470px;
+    --card-h:calc(var(--strip-h) - 130px);
     --card-w:calc(var(--card-h) * .75);
     --gap:14px;
     --edge:max(20px, calc((100vw - 1500px) / 2));
     --r:8px;
   }
   *{box-sizing:border-box;}
-  html{height:100%;}
-  html,body{margin:0;padding:0;background:var(--paper);}
+  html,body{
+    margin:0; padding:0; background:var(--paper);
+    height:var(--strip-h); overflow:hidden;
+  }
   body{
-    height:100%;
-    overflow:hidden;
     display:flex; flex-direction:column; justify-content:flex-start;
     font-family:'Poppins',system-ui,sans-serif;
     color:var(--ink);
@@ -136,7 +138,8 @@
 
   @media (max-width:860px){
     :root{
-      --card-h:max(230px, calc(100vh - 106px));
+      --strip-h:400px;
+      --card-h:calc(var(--strip-h) - 104px);
       --card-w:min(58vw, calc(var(--card-h) * .8));
       --gap:10px; --edge:18px;
     }
