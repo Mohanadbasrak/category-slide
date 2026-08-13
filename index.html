@@ -13,9 +13,8 @@
     --line:#E6E3DF;
     --paper:#FFFFFF;
     --accent:#E8531A;
-    /* ŞERİDİN TOPLAM YÜKSEKLİĞİ — tek ayar noktası. Kart boyu buna göre hesaplanır. */
-    --strip-h:470px;
-    --card-h:calc(var(--strip-h) - 130px);
+    /* Kart boyu iframe'in gerçek yüksekliğine göre hesaplanır (100vh = iframe boyu) */
+    --card-h:clamp(260px, calc(100vh - 130px), 520px);
     --card-w:calc(var(--card-h) * .75);
     --gap:14px;
     --edge:max(20px, calc((100vw - 1500px) / 2));
@@ -24,7 +23,7 @@
   *{box-sizing:border-box;}
   html,body{
     margin:0; padding:0; background:var(--paper);
-    height:var(--strip-h); overflow:hidden;
+    height:100%; overflow:hidden;
   }
   body{
     display:flex; flex-direction:column; justify-content:flex-start;
@@ -138,8 +137,7 @@
 
   @media (max-width:860px){
     :root{
-      --strip-h:400px;
-      --card-h:calc(var(--strip-h) - 104px);
+      --card-h:clamp(230px, calc(100vh - 104px), 430px);
       --card-w:min(58vw, calc(var(--card-h) * .8));
       --gap:10px; --edge:18px;
     }
@@ -151,6 +149,13 @@
     .card__name{font-size:15px;}
     .card__desc{font-size:11.5px;}
     .cat__progress{margin-top:16px;}
+  }
+
+  /* GEÇİCİ ÖLÇÜM ROZETİ — ölçüyü öğrendikten sonra bu bloğu ve #olcum etiketini sil */
+  #olcum{
+    position:fixed; top:8px; right:8px; z-index:99;
+    background:#E8531A; color:#fff; font-size:12px; font-weight:500;
+    padding:6px 10px; border-radius:4px; font-family:'Poppins',sans-serif;
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -322,6 +327,7 @@
   </div>
 
   <div class="cat__progress" aria-hidden="true"><span id="bar"></span></div>
+  <div id="olcum">ölçülüyor…</div>
 </section>
 
 <script>
@@ -355,6 +361,14 @@
     var h = Math.ceil(document.querySelector('.cat').getBoundingClientRect().height);
     if(window.parent !== window){ window.parent.postMessage({cageArtHeight:h}, '*'); }
   }
+  function olc(){
+    var el = document.getElementById('olcum');
+    if(el) el.textContent = 'iframe: ' + window.innerHeight + 'px / içerik: ' + document.querySelector('.cat').getBoundingClientRect().height.toFixed(0) + 'px';
+  }
+  olc();
+  window.addEventListener('resize', olc);
+  window.addEventListener('load', olc);
+
   window.addEventListener('load', sendHeight);
   window.addEventListener('resize', sendHeight);
   setTimeout(sendHeight, 400);
