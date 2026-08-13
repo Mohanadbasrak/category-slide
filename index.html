@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cage Art Studio — Kategori Şeridi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Cage Art Studio — Kategori Şeridi (ikas HTML bloğuna doğrudan yapıştırılır) -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -22,16 +15,13 @@
     --r:8px;
   }
   *{box-sizing:border-box;}
-  html,body{
-    margin:0; padding:0; background:var(--paper);
-    height:100%; overflow:hidden;
-  }
-  body{
-    display:flex; flex-direction:column; justify-content:flex-start;
+  .cat *{box-sizing:border-box;}
+  .cat{
     font-family:'Poppins',system-ui,sans-serif;
     color:var(--ink);
+    background:var(--paper);
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
+    overflow:hidden;
   }
   .cat{padding:20px 0 16px; width:100%;}
 
@@ -152,20 +142,11 @@
     .cat__progress{margin-top:16px;}
   }
 
-  /* GEÇİCİ ÖLÇÜM ROZETİ */
-  #olcum{
-    position:fixed; top:8px; right:8px; z-index:99;
-    background:#E8531A; color:#fff; font-size:12px; font-weight:500;
-    padding:6px 10px; border-radius:4px; font-family:'Poppins',sans-serif;
-  }
-
   @media (prefers-reduced-motion:reduce){
     .cat__track{scroll-behavior:auto;}
     .card__media,.card__rule{transition:none;}
   }
 </style>
-</head>
-<body>
 
 <section class="cat" aria-labelledby="cat-title">
   <div class="cat__head">
@@ -328,7 +309,6 @@
   </div>
 
   <div class="cat__progress" aria-hidden="true"><span id="bar"></span></div>
-  <div id="olcum">ölçülüyor…</div>
 </section>
 
 <script>
@@ -341,17 +321,9 @@
   // iframe yüksekliğini tam dolduracak satır sayısı ve kart boyunu hesapla
   function layout(){
     var mobil = window.innerWidth <= 860;
-    var kalan = window.innerHeight - (mobil ? 104 : 130);   // başlık + gösterge payı
-    var enAz  = mobil ? 230 : 260;
-    var enCok = mobil ? 380 : 430;                          // kart bundan uzun olmasın
-    var kartH = Math.max(enAz, Math.min(kalan, enCok));
+    // KART YÜKSEKLİĞİ — büyütmek/küçültmek istersen tek değişeceğin yer
     document.documentElement.style.setProperty('--rows', 1);
-    document.documentElement.style.setProperty('--card-h', kartH + 'px');
-  }
-
-  function olc(){
-    var el = document.getElementById('olcum');
-    if(el) el.textContent = 'iframe: ' + window.innerHeight + 'px';
+    document.documentElement.style.setProperty('--card-h', (mobil ? 330 : 400) + 'px');
   }
 
   function step(){
@@ -374,8 +346,6 @@
   window.addEventListener('resize', function(){ layout(); update(); });
   layout();
   update();
-  olc();
-  window.addEventListener('resize', olc);
   window.addEventListener('load', function(){ layout(); update(); });
 
   function sendHeight(){
@@ -387,5 +357,3 @@
   setTimeout(sendHeight, 400);
 })();
 </script>
-</body>
-</html>
